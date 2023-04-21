@@ -1,28 +1,27 @@
 package com.brc.sieve;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Scanner;
 
 public class Sieve {
-    private boolean[] notPrime;
+    private BitSet notPrime;
     private ArrayList<Integer> primeList = new ArrayList<>();
-
     public void calculate(int limit) {
-        notPrime = new boolean[limit];
-        for (int i = 2; i < Math.sqrt(limit); i++) {
-            if (!notPrime[i]) {
-                for (int j = i * i; j < limit; j += i) {
-                    if (j % i == 0) {
-                        notPrime[j] = true;
-                    }
+        notPrime = new BitSet(limit + 1);
+        for (int i = 2; i <= Math.sqrt(limit); i++) {
+            if (!notPrime.get(i)) {
+                for (int j = i * i; j <= limit; j += i) {
+                    notPrime.set(j);
                 }
             }
         }
     }
 
     public String getList() {
-        for (int i = 2; i < notPrime.length; i++) {
-            if (!notPrime[i]) {
+        primeList.clear();
+        for (int i = 2; i < notPrime.length(); i++) {
+            if (!notPrime.get(i)) {
                 primeList.add(i);
             }
         }
