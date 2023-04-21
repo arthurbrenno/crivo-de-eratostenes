@@ -4,43 +4,29 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Sieve {
-    private static final Scanner scanner = new Scanner(System.in);
-    private static boolean[] prime = new boolean[2];
-    private static ArrayList<Integer> primes = new ArrayList<>();
-    private static int limit;
+    private boolean[] notPrime;
+    private ArrayList<Integer> primeList = new ArrayList<>();
 
-    public static void sieve(int limit) {
+    public void calculate(int limit) {
+        notPrime = new boolean[limit];
         for (int i = 2; i < Math.sqrt(limit); i++) {
-            if (prime[i]) {
-                for (int j = i; j < limit; j++) {
+            if (!notPrime[i]) {
+                for (int j = i * i; j < limit; j += i) {
                     if (j % i == 0) {
-                        prime[j] = false;
+                        notPrime[j] = true;
                     }
                 }
             }
         }
     }
 
-    private static void initializePrimes(int length) {
-        prime = new boolean[length];
-        for (int i = 0; i < prime.length; i++) {
-            prime[i] = true;
-        }
-    }
-
-    private static void printPrimes() {
-        for (int i = 2; i < prime.length; i++) {
-            if (prime[i]) {
-                primes.add(i);
+    public String getList() {
+        for (int i = 2; i < notPrime.length; i++) {
+            if (!notPrime[i]) {
+                primeList.add(i);
             }
         }
-    }
-    public static void main(String[] args) {
-        System.out.println(prime[0]);
-        limit = scanner.nextInt();
-        initializePrimes(limit);
-        sieve(limit);
-        printPrimes();
+        return primeList.toString();
     }
 
 }
